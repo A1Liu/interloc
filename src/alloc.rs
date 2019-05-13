@@ -3,6 +3,7 @@ pub use core::sync::atomic::{fence, Ordering};
 
 /// An action that an allocator can take, either right before, or right after it
 /// happens.
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
 pub enum AllocAction {
     /// alloc was called
     Alloc,
@@ -23,7 +24,7 @@ pub enum AllocAction {
 }
 
 /// Before or after an allocation call is executed.
-#[derive(Clone, Copy, Eq, PartialEq)]
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
 pub enum AllocRel {
     Before,
     After,
