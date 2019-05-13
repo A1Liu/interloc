@@ -3,6 +3,9 @@ name = "interloc"
 version = "0.1.0"
 authors = ["Albert Liu <albertymliu@gmail.com>"]
 edition = "2018"
+repository = "https://github.com/A1Liu/interloc"
+homepage = "https://github.com/A1Liu/interloc"
+license = "MIT"
 
 [dependencies]
 parking_lot = "0.8.0"
