@@ -25,7 +25,11 @@ impl MyMonitor {
 }
 
 impl AllocMonitor for MyMonitor {
+
+    // The immutable `&self` reference signature is there because the global allocator
+    // needs to be thread-safe.
     fn monitor(&self, layout: Layout, action: AllocAction) {
+        // Monitors are inherently composable
         self.global.monitor(layout, action);
         self.local.monitor(layout, action);
     }
