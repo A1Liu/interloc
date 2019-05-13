@@ -5,6 +5,8 @@ authors = ["Albert Liu <albertymliu@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/A1Liu/interloc"
 homepage = "https://github.com/A1Liu/interloc"
+description = "Middleware allocator for keeping track of memory usage."
+readme = "README.md"
 license = "MIT"
 
 [dependencies]
