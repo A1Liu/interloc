@@ -15,7 +15,7 @@
 //!
 //! impl MyMonitor {
 //!
-//!     // This needs to be const to be usable in static functions
+//!     // This needs to be const to be usable in static variable declarations.
 //!     pub const fn new() -> Self {
 //!         Self {
 //!             global: StatsMonitor::new(),

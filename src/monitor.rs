@@ -5,7 +5,7 @@ use core::sync::atomic::{fence, Ordering};
 use lock_api::RawRwLock as RawRwLockTrait;
 use parking_lot::RawRwLock;
 
-/// Information about allocs by the allocator
+/// Information about allocations by the allocator.
 #[derive(Clone, Default, Copy, Debug, Hash, PartialEq, Eq)]
 pub struct AllocInfo {
     // Taken directly from https://github.com/neoeinstein/stats_alloc, or stats_alloc
@@ -70,6 +70,8 @@ impl AllocInfo {
     }
 }
 
+/// Monitor of global memory usage statistics. Uses a read-write lock to prevent
+/// data corruption.
 pub struct StatsMonitor {
     info: AllocInfo,
     lock: RawRwLock,

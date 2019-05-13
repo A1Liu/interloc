@@ -1,5 +1,6 @@
-pub use core::alloc::{GlobalAlloc, Layout};
-pub use core::sync::atomic::{fence, Ordering};
+use core::alloc::GlobalAlloc;
+pub use core::alloc::Layout;
+use core::sync::atomic::{fence, Ordering};
 
 /// An action that an allocator can take, either right before, or right after it
 /// happens.
@@ -93,6 +94,7 @@ where
     T: GlobalAlloc,
     F: AllocMonitor,
 {
+    #[inline]
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
         self.monitor_(layout, AllocAction::Alloc);
         fence(Ordering::SeqCst);
@@ -102,6 +104,7 @@ where
         ptr
     }
 
+    #[inline]
     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
         self.monitor_(layout, AllocAction::Dealloc { ptr });
         fence(Ordering::SeqCst);
@@ -110,6 +113,7 @@ where
         self.monitor_(layout, AllocAction::DeallocResult);
     }
 
+    #[inline]
     unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
         self.monitor_(layout, AllocAction::AllocZeroed);
         fence(Ordering::SeqCst);
@@ -119,6 +123,7 @@ where
         ptr
     }
 
+    #[inline]
     unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
         self.monitor_(layout, AllocAction::Realloc { ptr, new_size });
         fence(Ordering::SeqCst);
@@ -129,7 +134,10 @@ where
     }
 }
 
-/// An allocator monitor that can be used to monitor calls to the allocator.
+/// When attached to an `InterAlloc` instance, this struct's `monitor` method
+/// is called before and after calls to the inner allocator. The ordering of
+/// these method calls is enforced by `std::sync::atomic::fence`
+/// with `std::sync::atomic::Ordering::SeqCst`.
 pub trait AllocMonitor {
     /// The api to the monitor. This method is called right before and right after
     /// allocations happen.
