@@ -33,12 +33,18 @@
 //!
 //! static MONITOR: MyMonitor = MyMonitor::new();
 //!
-//! // This needs to be done at the project root
+//! // This needs to be done at the project root, i.e. `lib.rs` or `main.rs`
 //! #[global_allocator]
 //! static GLOBAL: InterAlloc<System, MyMonitor> = InterAlloc {
 //!     inner: System,
 //!     monitor: &MONITOR,
 //! };
+//!
+//! fn use_monitor_in_thread() {
+//!     let alloc_info = MONITOR.local.info();
+//!     let _allocation_test = Vec::<u8>::with_capacity(100);
+//!     println!("{:#?}", MONITOR.local.info().relative_to(&alloc_info));
+//! }
 //! ```
 extern crate lock_api;
 extern crate parking_lot;
