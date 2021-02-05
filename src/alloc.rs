@@ -129,7 +129,7 @@ where
         fence(Ordering::SeqCst);
         let ptr = self.inner.realloc(ptr, layout, new_size);
         fence(Ordering::SeqCst);
-        self.monitor_(layout, AllocAction::Realloc { ptr, new_size });
+        self.monitor_(layout, AllocAction::ReallocResult { ptr, new_size });
         ptr
     }
 }
